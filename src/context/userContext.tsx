@@ -1,26 +1,46 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 
-const UserContext = createContext(undefined);
+export type User = {
+  id: string;
+  email: string;
+};
 
-export function UserProvider({ children }) {
-  const [currentUser, setCurrentUser]=useState<null|string>(null);
+type UserContextType = {
+  currentUser: User | null;
+  setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
+};
 
-  useEffect(()=>{
-    
-  },[]);
+const UserContext = createContext<UserContextType | undefined>(undefined);
+
+type UserProviderProps = {
+  children: ReactNode;
+};
+
+export function UserProvider({ children }: UserProviderProps) {
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    // initialization logic here
+  }, []);
 
   return (
-    <UserContext.Provider value={{currentUser, setCurrentUser}}>
+    <UserContext.Provider value={{ currentUser, setCurrentUser }}>
       {children}
     </UserContext.Provider>
   );
 }
 
-export function useUser() {
+export function useUser(): UserContextType {
   const context = useContext(UserContext);
 
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
+  if (context === undefined) {
+    throw new Error("useUser must be used within a UserProvider");
   }
 
   return context;

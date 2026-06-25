@@ -1,34 +1,36 @@
 import { useCallback } from "react"
 import { api } from "../api";
-import { useUser } from "../context";
+import { useUser, type User } from "../context";
+
+type ResponceType = {
+  message: string;
+  user: User;
+};
 
 export const useRegister = ()=>{
     const {setCurrentUser} = useUser();
 
     const handleRegistration = useCallback(
-    async (
-      email: "login" | "register",
-      password: string,
-      confirmPassword?: string,
-    ) => {
-      
+      async (email: string, password: string, confirmPassword?: string) => {
+        try {
+          const result: ResponceType = await api.post("/register", {
+            email,
+            password,
+            confirmPassword,
+          });
+          console.log(result);
 
-      try {
-        const result = await api.post("/register", {
-          email,
-          password,
-          confirmPassword,
-        });
+          setCurrentUser(result.user);
+        } catch (error) {
+          if (error instanceof Error) {
+            throw new Error(error.message);
+          }
 
-        setCurrentUser(result);
-
-        
-      } catch (error) {
-        throw new Error(error);
-      }
-    },
-    [],
-  );
+          throw new Error(String(error));
+        }
+      },
+      [setCurrentUser],
+    );
   return(
     {handleRegistration}
   )
