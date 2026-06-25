@@ -34,8 +34,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ env.IMAGE_NAME }}:${{ steps.branch.outputs.branch_name }}
-            ${{ env.IMAGE_NAME }}:${{ steps.branch.outputs.branch_name }}-${{ steps.sha.outputs.short_sha }}
+            ${{ env.IMAGE_NAME }}:${{ github.ref_name }}
+            ${{ env.IMAGE_NAME }}:${{ github.ref_name }}-${{ steps.sha.outputs.short_sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Job Summary
