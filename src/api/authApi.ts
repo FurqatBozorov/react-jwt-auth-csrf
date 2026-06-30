@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "/",
+  baseURL: "/api",
   withCredentials: true,
 });
 
@@ -22,12 +22,7 @@ api.interceptors.response.use(
   (res) => res,
   async (error) => {
     if (error.response.status === 401) {
-      await axios.post(
-        "http://localhost:5000/refresh",
-        {},
-        { withCredentials: true },
-      );
-
+      await api.post("/refresh", {}, { withCredentials: true });
       return api(error.config);
     }
 
