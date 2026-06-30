@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { Link } from "react-router";
 
 export const LoginForm = ({
   formType,
@@ -34,7 +35,7 @@ export const LoginForm = ({
       }}
     >
       <h5>{`${formType} form`}</h5>
-      {formType === "login" ? <h6>Don't you have an account? <a href="/register">Register</a></h6> : <h6>Do you have an account? <a href="/login">Log in</a></h6>}
+      {formType === "login" ? <h6>Don't you have an account? <Link to="/register">Register</Link></h6> : <h6>Do you have an account? <Link to="/login">Log in</Link></h6>}
 
       <input
         type="text"
